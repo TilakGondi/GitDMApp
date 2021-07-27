@@ -8,11 +8,14 @@
 
 import XCTest
 @testable import GitDMApp
-
+var presenter: UsersListPresenter!
+var interactor = UsersInteractor()
 class GitDMAppTests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        presenter  = UsersListPresenter()
+        interactor = UsersInteractor()
     }
 
     override func tearDown() {
@@ -22,6 +25,17 @@ class GitDMAppTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        presenter.loadUsers(finished: {
+            interactor.getAllUserFromServer { (users) in
+                XCTAssert(users.count != 0)
+            } finishedWithError: { (error) in
+                print(error)
+                XCTFail()
+            }
+        }) { (errorResponse) in
+            print(errorResponse)
+            XCTFail()
+        }
     }
 
     func testPerformanceExample() {

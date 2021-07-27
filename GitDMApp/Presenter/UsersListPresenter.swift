@@ -19,6 +19,7 @@ class UsersListPresenter {
         interactor.getAllUserFromServer(finished: { (usersList) in
             self.userList = usersList //this is now notified to the caller and presented on table.
             //Further here we can have the DB releated action to store the users list .
+            print(self.userList)
             DispatchQueue.main.async {
                 finished()
             }
